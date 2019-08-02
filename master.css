@@ -1,0 +1,8 @@
+*{
+  margin:0 1px;
+  padding:0;
+  box-sizing: border-box;
+}
+#template{
+  display:none;
+}
