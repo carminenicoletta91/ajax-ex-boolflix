@@ -5,6 +5,7 @@ $(document).ready(function(){
       // richiamo funzione searchfilm
       searchfilm();
       });
+
 })//chiusura document ready
 
 
@@ -16,7 +17,7 @@ $(document).ready(function(){
     console.log(search);
     // var valore=parseInt(prompt("inserisci valore"));
     // dichiaro var per prendere l'url dell'api
-    var url ="https://api.themoviedb.org/3/search/tv?api_key=25b5af028ffd8f79e2dc1a12603c0a63&query="+search;
+    var url ="https://api.themoviedb.org/3/search/movie?api_key=25b5af028ffd8f79e2dc1a12603c0a63&language=it-IT&query="+search;
     console.log(url);
     $.ajax({//chiamata ajax
       url:url,
@@ -27,10 +28,14 @@ $(document).ready(function(){
         var template=Handlebars.compile(source);
         var nuovovoto//variabile per trasformare i voti iniziali per eccesso o difetto;
         var stella//varibaile con valore da 0 a 5 per inserimento stelle;
-        var attributo//variabile che assegna un attributo ;
+        var attributorif//variabile che assegna un attributo ;
+        var lingua;
+        var attributoriflan;
         // ciclo for scorro nei miei risultati della chiamata
         for(var i=0;i<risultati.length;i++){
           nuovovoto=Math.round(risultati[i].vote_average);
+          lingua=risultati[i].original_language;
+          console.log(lingua);
           // controllo se nuovo vuoto presenta valori da 0 a 10
           switch (nuovovoto){
             case 1:
@@ -71,30 +76,81 @@ $(document).ready(function(){
           // controllo se stella ha valori da 1 a 5
           switch (stella){
             case 1:
-              attributo=1;//avrà un attributo rif=1
+              attributorif=1;//avrà un attributo rif=1
               break;
             case 2:
-              attributo=2;//avrà un attributo rif=2
+              attributorif=2;//avrà un attributo rif=2
               break;
             case 3:
-              attributo=3;//avrà un attributo rif=3
+              attributorif=3;//avrà un attributo rif=3
               break;
             case 4:
-              attributo=4;//avrà un attributo rif=4
+              attributorif=4;//avrà un attributo rif=4
               break;
             case 5:
-              attributo=5;//avrà un attributo rif=5
+              attributorif=5;//avrà un attributo rif=5
               break;
             default:
-              attributo=0;//avrà un attributo rif=0
+              attributorif=0;//avrà un attributo rif=0
               break;
           }
+
+          // controllo della lingua con inserimento per rif mettibandiera funzione
+          switch (lingua) {
+            case 'it':
+              attributoriflan='it';
+              break;
+            case 'en':
+              attributoriflan='en';
+              break;
+            case 'es':
+              attributoriflan='es';
+              break;
+            case 'da':
+              attributoriflan='da';
+              break;
+            case 'fr':
+              attributoriflan='fr';
+              break;
+            case 'pt':
+              attributoriflan='pt';
+            break;
+            case 'et':
+              attributoriflan='et';
+            break;
+            case 'de':
+              attributoriflan='de';
+            break;
+            case 'ru':
+              attributoriflan='ru';
+            break;
+            case 'uk':
+              attributoriflan='uk';
+            break;
+            case 'cy':
+              attributoriflan='cy';
+            break;
+            case 'sv':
+              attributoriflan='sv';
+            break;
+            case 'zh':
+              attributoriflan='zh';
+            break;
+            case 'cs':
+              attributoriflan='cs';
+            break;
+            default:
+              attributoriflan='nd';
+              break;
+          }//chiusura controllo
           var context ={
-            title:risultati[i].name,
-            titleoriginal:risultati[i].original_name,
+
+            title:risultati[i].title,
+            titleoriginal:risultati[i].original_title,
             language:risultati[i].original_language,
             vote:stella,
-            attributo:attributo,
+            attributoriflan:attributoriflan,
+            attributo:attributorif,
           };
           var html =template(context);
           // riempimento div box-film-search tramite handlebars
@@ -103,6 +159,7 @@ $(document).ready(function(){
         // dopo riempimento sostituisco i valori di voto in delle
         // opportune stelle che vanno da 1 a 5
         mettistella();
+        mettibandiera();
 
       },//chiusura funzione success
     });//chiusura chiamta ajax
@@ -113,11 +170,12 @@ $(document).ready(function(){
     //scorro nei p contenuti nei div contenuti in box-film-search che hanno
     // con uno span  con attributo rif
     $(".box-film-search >div p span[rif]  ").each(function(){
+
       // dichiaro variabile e gli assegno come valore la mia icona stella
       // presa da fontawesome
       var inserisci=("<i class='fas fa-star'>"+"</i>");
-      console.log(inserisci);
-      console.log($(this));
+      // console.log(inserisci);
+      // console.log($(this));
       // verifica che elmento temporaneo abbia un attributo rif
       switch ($(this).attr("rif")) {
         case '0'://con valore 0
@@ -141,3 +199,60 @@ $(document).ready(function(){
       }//chiusura controllo
     })//chiusura funzione each
   }//chiusura funzione mettistella
+
+  // funzione mettibandiera
+  function mettibandiera(){
+    //scorro nei p contenuti nei div contenuti in box-film-search che hanno
+    //  uno span  con attributo riflan
+    $(".box-film-search >div p span[riflan]").each(function(){
+      switch ($(this).attr("riflan")) {
+        case 'it'://lingua italiano
+          $(this).html("<img src='imgbandiera/ita.png'>");
+        break;
+        case 'en'://lingua inglese
+          $(this).html("<img src='imgbandiera/en.png'>");
+        break;
+        case 'es'://lingua spagnolo
+          $(this).html("<img src='imgbandiera/es.png'>");
+        break;
+        case 'da'://lingua danese
+          $(this).html("<img src='imgbandiera/da.png'>");
+        break;
+        case 'fr'://lingua francese
+          $(this).html("<img src='imgbandiera/fr.png'>");
+        break;
+        case 'pt'://lingua portoghese
+          $(this).html("<img src='imgbandiera/pt.png'>");
+        break;
+        case 'et'://lingua estone
+          $(this).html("<img src='imgbandiera/et.png'>");
+        break;
+        case 'de'://lingua tedesco
+          $(this).html("<img src='imgbandiera/de.png'>");
+        break;
+        case 'cy'://lingua gallese
+          $(this).html("<img src='imgbandiera/cy.png'>");
+        break;
+        case 'uk'://lingua ucraina
+          $(this).html("<img src='imgbandiera/uk.png'>");
+        break;
+        case 'sv'://lingua svedese
+          $(this).html("<img src='imgbandiera/sv.png'>");
+        break;
+        case 'ru'://lingua russa
+          $(this).html("<img src='imgbandiera/ru.png'>");
+        break;
+        case 'zh'://lingua cinese
+          $(this).html("<img src='imgbandiera/zh.png'>");
+        break;
+        case 'cs'://lingua ceca
+          $(this).html("<img src='imgbandiera/cs.png'>");
+        break;
+        // default://quando non trova una lingua
+        //   $(this).html("<img src=''>");
+        // break;
+      }//chiusura controllo
+
+    })//chiusura funzione each
+
+  }//chiusura funzione mettibandiera
