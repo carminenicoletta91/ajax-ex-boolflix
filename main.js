@@ -18,11 +18,15 @@ $(document).ready(function(){
     // var valore=parseInt(prompt("inserisci valore"));
     // dichiaro var per prendere l'url dell'api
     var url ="https://api.themoviedb.org/3/search/movie?api_key=25b5af028ffd8f79e2dc1a12603c0a63&language=it-IT&query="+search;
-    console.log(url);
+    var urltv ="https://api.themoviedb.org/3/search/tv?api_key=25b5af028ffd8f79e2dc1a12603c0a63&language=it-IT&query="+search;
+
+
+
     $.ajax({//chiamata ajax
       url:url,
       method:"GET",
       success:function(data){
+
         var risultati=$(data.results);//variabile con valore risultati della chiamta
         var source=$("#template").html();
         var template=Handlebars.compile(source);
@@ -31,42 +35,51 @@ $(document).ready(function(){
         var attributorif//variabile che assegna un attributo ;
         var lingua;
         var attributoriflan;
+        var suffisso;
+        var image ;
         // ciclo for scorro nei miei risultati della chiamata
         for(var i=0;i<risultati.length;i++){
           nuovovoto=Math.round(risultati[i].vote_average);
           lingua=risultati[i].original_language;
-          console.log(lingua);
+          suffisso=risultati[i].poster_path;
+          // condizione per i film senza copertina
+          if(suffisso ===null){
+            image="imgbandiera/copertina.gif";
+          }else{//quando il film ha la copertina
+            image="https://image.tmdb.org/t/p/w185"+suffisso;
+          }
+          // console.log(lingua);
           // controllo se nuovo vuoto presenta valori da 0 a 10
           switch (nuovovoto){
             case 1:
             case 2:
-              console.log("prima"+nuovovoto);
+              // console.log("prima"+nuovovoto);
               nuovovoto=1;//corrispondera a 1 stella
-              console.log("dopo"+nuovovoto);
+              // console.log("dopo"+nuovovoto);
             break;
             case 3:
             case 4:
-              console.log("prima"+nuovovoto);
+              // console.log("prima"+nuovovoto);
               nuovovoto=2;//corrispondera a 2 stelle
-              console.log("dopo"+nuovovoto);
+              // console.log("dopo"+nuovovoto);
             break;
             case 5:
             case 6:
-              console.log("prima"+nuovovoto);
+              // console.log("prima"+nuovovoto);
               nuovovoto=3;//corrisponderà a 3 stelle
-              console.log("dopo"+nuovovoto);
+              // console.log("dopo"+nuovovoto);
             break;
             case 7:
             case 8:
-              console.log("prima"+nuovovoto);
+              // console.log("prima"+nuovovoto);
               nuovovoto=4;//corrisponderà a 4 stelle
-              console.log("dopo"+nuovovoto);
+              // console.log("dopo"+nuovovoto);
             break;
             case 9:
             case 10:
-              console.log("prima"+nuovovoto);
+              // console.log("prima"+nuovovoto);
               nuovovoto=5;//corrisponderà a 5 stelle
-              console.log("dopo"+nuovovoto);
+              // console.log("dopo"+nuovovoto);
             break;
             case 0:
               nuovovoto=0;//corrispondera a 0 stelle
@@ -143,26 +156,38 @@ $(document).ready(function(){
               attributoriflan='nd';
               break;
           }//chiusura controllo
-          var context ={
 
+
+
+           var context ={
+            image:image,
             title:risultati[i].title,
             titleoriginal:risultati[i].original_title,
             language:risultati[i].original_language,
             vote:stella,
             attributoriflan:attributoriflan,
             attributo:attributorif,
+
           };
           var html =template(context);
           // riempimento div box-film-search tramite handlebars
           $(".box-film-search ").append(html);
-        }
+
+
+
+
+}
         // dopo riempimento sostituisco i valori di voto in delle
         // opportune stelle che vanno da 1 a 5
         mettistella();
         mettibandiera();
 
       },//chiusura funzione success
+
     });//chiusura chiamta ajax
+
+
+
   };//chiusura funzione cerca film
 
   // funzione per aggiungere le icone stella al voto
