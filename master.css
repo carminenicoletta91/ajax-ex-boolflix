@@ -33,7 +33,9 @@ border:2px solid white;
 color:white;
 width:342px;
 height:450px;
-margin-bottom:20px; 
+margin-bottom:20px;
+background-repeat: no-repeat;
+background-size: cover;
 }
 
 

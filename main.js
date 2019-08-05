@@ -16,7 +16,6 @@ $(document).ready(function(){
     $(".box-film-search >div ").remove();
     var urlmovie ="https://api.themoviedb.org/3/search/movie?api_key=25b5af028ffd8f79e2dc1a12603c0a63&query="+y+"&page?&language=it-IT";
     $.ajax({//prima chiamata ajax interrogo sul numero totali di pagine
-
       url:urlmovie,
       method:"GET",
       success:function(data){
@@ -34,16 +33,17 @@ $(document).ready(function(){
               var template=Handlebars.compile(source);
               var nuovovoto//variabile per trasformare i voti iniziali per eccesso o difetto;
               var stella//varibaile con valore da 0 a 5 per inserimento stelle;
-              var attributorif//variabile che assegna un attributo ;
-              var lingua;
-              var attributoriflan;
-              var suffisso;
-              var image ;
-              // ciclo for scorro nei miei risultati della chiamata
+              var attributorif//variabile che assegna un attributo per le stelle ;
+              var lingua;//variabile che prende come valore la lingua originale del film
+              var attributoriflan;//variabile che assegna un attributo per la lingua
+              var suffisso;//variabile per inserire la prima parte del codice dello style
+              var image ;//varibaile per inserire immagine come sfondo
               for(var i=0;i<risultati.length;i++){
-                nuovovoto=Math.round(risultati[i].vote_average);
-                lingua=risultati[i].original_language;
-                suffisso=risultati[i].poster_path;
+                //todo trovare modo per arrotondare per difetto quando la cifra decimale è pari a 5
+                nuovovoto=Math.round(risultati[i].vote_average);//trasformo il voto in numero intero arrotondando per eccesso o difetto
+                console.log(nuovovoto);
+                lingua=risultati[i].original_language;//prendo il valore della lingua
+                suffisso=risultati[i].poster_path;//prendo la seconda parte del codice per lo style
                 // condizione per i film senza copertina
                 if(suffisso ===null){
                   image="imgbandiera/copertina.gif";
@@ -52,112 +52,16 @@ $(document).ready(function(){
                 }
                 // console.log(lingua);
                 // controllo se nuovo vuoto presenta valori da 0 a 10
-                switch (nuovovoto){
-                  case 1:
-                  case 2:
-                    // console.log("prima"+nuovovoto);
-                    nuovovoto=1;//corrispondera a 1 stella
-                    // console.log("dopo"+nuovovoto);
-                  break;
-                  case 3:
-                  case 4:
-                    // console.log("prima"+nuovovoto);
-                    nuovovoto=2;//corrispondera a 2 stelle
-                    // console.log("dopo"+nuovovoto);
-                  break;
-                  case 5:
-                  case 6:
-                    // console.log("prima"+nuovovoto);
-                    nuovovoto=3;//corrisponderà a 3 stelle
-                    // console.log("dopo"+nuovovoto);
-                  break;
-                  case 7:
-                  case 8:
-                    // console.log("prima"+nuovovoto);
-                    nuovovoto=4;//corrisponderà a 4 stelle
-                    // console.log("dopo"+nuovovoto);
-                  break;
-                  case 9:
-                  case 10:
-                    // console.log("prima"+nuovovoto);
-                    nuovovoto=5;//corrisponderà a 5 stelle
-                    // console.log("dopo"+nuovovoto);
-                  break;
-                  case 0:
-                    nuovovoto=0;//corrispondera a 0 stelle
-                }//chiusura controllo
-                // variabile stella assume il nuovo valore del nuovovoto
-                stella=nuovovoto;
-                // controllo se stella ha valori da 1 a 5
-                switch (stella){
-                  case 1:
-                    attributorif=1;//avrà un attributo rif=1
-                    break;
-                  case 2:
-                    attributorif=2;//avrà un attributo rif=2
-                    break;
-                  case 3:
-                    attributorif=3;//avrà un attributo rif=3
-                    break;
-                  case 4:
-                    attributorif=4;//avrà un attributo rif=4
-                    break;
-                  case 5:
-                    attributorif=5;//avrà un attributo rif=5
-                    break;
-                  default:
-                    attributorif=0;//avrà un attributo rif=0
-                    break;
-                }
+                var nuovovotoda1a5=convertivoto(nuovovoto);//richiamo funzione per trasformare il voto da 1 a 5
+                console.log(nuovovotoda1a5);
 
+                // variabile stella assume il nuovo valore del nuovovoto
+                stella=nuovovotoda1a5;
+                console.log(stella);
+                attributorif=assegnaattrstella(nuovovotoda1a5);//richiamo funzione per assegnare attributo ad h2 voto
+                console.log(attributorif);
+                attributoriflan=assegnaattrlingua(lingua);//richiamo funzione per assegnare attributo ad h2 lingua
                 // controllo della lingua con inserimento per rif mettibandiera funzione
-                switch (lingua) {
-                  case 'it':
-                    attributoriflan='it';
-                    break;
-                  case 'en':
-                    attributoriflan='en';
-                    break;
-                  case 'es':
-                    attributoriflan='es';
-                    break;
-                  case 'da':
-                    attributoriflan='da';
-                    break;
-                  case 'fr':
-                    attributoriflan='fr';
-                    break;
-                  case 'pt':
-                    attributoriflan='pt';
-                  break;
-                  case 'et':
-                    attributoriflan='et';
-                  break;
-                  case 'de':
-                    attributoriflan='de';
-                  break;
-                  case 'ru':
-                    attributoriflan='ru';
-                  break;
-                  case 'uk':
-                    attributoriflan='uk';
-                  break;
-                  case 'cy':
-                    attributoriflan='cy';
-                  break;
-                  case 'sv':
-                    attributoriflan='sv';
-                  break;
-                  case 'zh':
-                    attributoriflan='zh';
-                  break;
-                  case 'cs':
-                    attributoriflan='cs';
-                  break;
-                  default:
-                    attributoriflan='nd';
-                    break;
-                }//chiusura controllo
 
                  var context ={
                   image:image,
@@ -174,10 +78,9 @@ $(document).ready(function(){
                 $(".box-film-search ").append(html);
 
               }
-              // dopo riempimento sostituisco i valori di voto in delle
-              // opportune stelle che vanno da 1 a 5
-              mettistella();
-              mettibandiera();
+
+              mettistella();//inserisco il numero di stelle opportune
+              mettibandiera();//inserisco la bandiera corrispondente alla lingua
 
             },//chiusura funzione success seconda chiamata ajax
 
@@ -189,17 +92,72 @@ $(document).ready(function(){
     });//chiusura prima chiamata ajax
   };//chiusura funzione cerca film
 
+
+  // funzione per convertire il voto
+  function convertivoto(x){
+    switch (x){
+      case 1:
+      case 2:
+        x=1;//corrispondera a 1 stella
+      break;
+      case 3:
+      case 4:
+        x=2;//corrispondera a 2 stelle
+      break;
+      case 5:
+      case 6:
+        x=3;//corrisponderà a 3 stelle
+      break;
+      case 7:
+      case 8:
+        x=4;//corrisponderà a 4 stelle
+      break;
+      case 9:
+      case 10:
+        x=5;//corrisponderà a 5 stelle
+      break;
+      case 0:
+        x=0;//corrispondera a 0 stelle
+    }//chiusura controllo
+    return x;
+  }//chiusura funzione
+
+  // funzione per assegnare attributo corrispondente al valore del voto
+  function assegnaattrstella(x){
+    var attributorif;
+    // controllo se stella ha valori da 1 a 5
+    switch (x){
+      case 1:
+        attributorif=1;//avrà un attributo rif=1
+        break;
+      case 2:
+        attributorif=2;//avrà un attributo rif=2
+        break;
+      case 3:
+        attributorif=3;//avrà un attributo rif=3
+        break;
+      case 4:
+        attributorif=4;//avrà un attributo rif=4
+        break;
+      case 5:
+        attributorif=5;//avrà un attributo rif=5
+        break;
+      default:
+        attributorif=0;//avrà un attributo rif=0
+        break;
+    }
+    return attributorif;
+  }
+
   // funzione per aggiungere le icone stella al voto
   function mettistella(){
     //scorro nei p contenuti nei div contenuti in box-film-search che hanno
     // con uno span  con attributo rif
     $(".box-film-search >div h2 span[rif]  ").each(function(){
-
       // dichiaro variabile e gli assegno come valore la mia icona stella
       // presa da fontawesome
       var inserisci=("<i class='fas fa-star yellow'>"+"</i>");
-      // console.log(inserisci);
-      // console.log($(this));
+
       // verifica che elmento temporaneo abbia un attributo rif
       switch ($(this).attr("rif")) {
         case '0'://con valore 0
@@ -223,6 +181,61 @@ $(document).ready(function(){
       }//chiusura controllo
     })//chiusura funzione each
   }//chiusura funzione mettistella
+
+  // funzione per assegnare attributo alla lingua
+  function assegnaattrlingua(x){
+    var attributoriflan;
+    switch (x) {
+      case 'it'://valore della lingua it
+        attributoriflan='it';
+      break;
+      case 'en'://valore della lingua en
+        attributoriflan='en';
+      break;
+      case 'es'://valore della lingua es
+        attributoriflan='es';
+      break;
+      case 'da'://valore della lingua da
+        attributoriflan='da';
+      break;
+      case 'fr'://valore della lingua fr
+        attributoriflan='fr';
+      break;
+      case 'pt'://valore della lingua pt
+        attributoriflan='pt';
+      break;
+      case 'et'://valore della lingua et
+        attributoriflan='et';
+      break;
+      case 'de'://valore della lingua de
+        attributoriflan='de';
+      break;
+      case 'ru'://valore della lingua ru
+        attributoriflan='ru';
+      break;
+      case 'uk'://valore della lingua uk
+        attributoriflan='uk';
+      break;
+      case 'cy'://valore della lingua cy
+        attributoriflan='cy';
+      break;
+      case 'sv'://valore della lingua sv
+        attributoriflan='sv';
+      break;
+      case 'zh'://valore della lingua zh
+        attributoriflan='zh';
+      break;
+      case 'cs'://valore della lingua cs
+        attributoriflan='cs';
+      break;
+      default:
+        attributoriflan='nd';
+      break;
+    }//chiusura controllo
+    return attributoriflan;
+  }//chiusura funzione
+
+
 
   // funzione mettibandiera
   function mettibandiera(){
@@ -272,7 +285,7 @@ $(document).ready(function(){
         case 'cs'://lingua ceca
           $(this).html("<img src='imgbandiera/cs.png'>");
         break;
-        // default://quando non trova una lingua
+        // todo default://quando non trova una lingua
         //   $(this).html("<img src=''>");
         // break;
       }//chiusura controllo
