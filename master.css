@@ -1,12 +1,22 @@
+
 *{
   margin:0 1px;
   padding:0;
   box-sizing: border-box;
 }
+body{
+  background-color:gray;
+}
 #template{
   display:none;
 }
-.box-film-search >div img{
+.box-film-search{
+  margin-top:30px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+.box-film-search >div p span img{
   border:1px solid black;
   box-sizing: border-box;
 }
@@ -16,4 +26,36 @@ header{
   align-items: center;
   height:100px;
   background:black;
+}
+.list-film-search{
+position: relative;
+border:2px solid white;
+color:white;
+width:342px;
+height:450px;
+margin-bottom:20px; 
+}
+
+
+
+.list-in h2 span{
+  font-size:20px;
+  color:rgba(255, 255, 255, 0.5);
+}
+.black{
+  background-color:black;
+}
+.list-film-search:hover .list-in{
+  display: block;
+}
+.list-in{
+  display: none;
+  position: absolute;
+  top:110px;
+  max-width:342px;
+}
+
+.yellow{
+  color:yellow;
+
 }
