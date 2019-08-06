@@ -1,6 +1,6 @@
 
 *{
-  margin:0 1px;
+  margin:0 ;
   padding:0;
   box-sizing: border-box;
 }
@@ -56,8 +56,22 @@ background-size: cover;
   top:110px;
   max-width:342px;
 }
-
+.search{
+  margin-right: 20px;
+}
+.search input{
+  width:150px;
+  line-height:20px;
+}
 .yellow{
   color:yellow;
+
+}
+.tipo-film{
+  position: absolute;
+  top:305px;
+  left:117px;
+  background:red;
+
 
 }

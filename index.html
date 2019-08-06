@@ -13,33 +13,36 @@
   <body>
 
     <header>
-    <div class="header-sx">
-      <img src="imgbandiera/logo.png" alt="">
-    </div>
+      <div class="header-sx">
+        <img src="imgbandiera/logo.png" alt="">
+      </div>
 
-    <div class="search">
-      <input type="text" placeholder="Search title">
-      <button>Send</button>
-    </div>
+      <div class="search">
+        <input type="text" placeholder="Search title">
+        <button>Send</button>
+      </div>
     </header>
     <div class="box-film-search">
-
+      
     </div>
 
 
 
     <!-- template handlebars -->
     <script id="template" type="text/x-handlebars-template">
+
       <div class="list-film-search" style="background-image:url('  {{image}}')" >
-        
+
         <div class="list-in">
           <h2>Titolo:<span >{{title}}</span></h2>
           <h2>Titolo Originale:<span >{{titleoriginal}}<span></h2>
           <h2>Lingua-Originale:<span riflan="{{attributoriflan}}">{{language}}</span></h2>
           <h2>Voto:<span rif="{{attributo}}">{{vote}}</span></h2>
+          <h2 class="tipo-film">Tipo:<span>{{tipo}}</span></h2>
         </div>
 
       </div>
+    </div>
     </script>
     <script src="main.js" type="text/javascript"></script>
   </body>

@@ -1,11 +1,23 @@
 $(document).ready(function(){
   //evento click su bottone
   $(".search button").click(
-    function(){
-      var search=$(".search input").val();
-      console.log("valore input:"+search);
-      searchfilm(search);
-      });
+  function(){
+    var search=$(".search input").val();
+    console.log("valore input:"+search);
+    searchfilm(search);
+  });
+  // funzione per inserire sfondo nero quando siamo con il mouse sull'elemento
+  // e per rimettere lo sfondo originale quando usciamo dall'elemento
+  $(".box-film-search ").on('mouseover mouseout','.list-film-search',function(event){
+    if(event.type==='mouseover'){
+      attributostyle=$(this).attr("style");
+      $(this).removeAttr("style");
+      $(this).attr("style","background:black");
+    }else if(event.type==='mouseout'){
+      $(this).removeAttr("style");
+      $(this).attr("style",attributostyle);
+    }
+  })
 
 })//chiusura document ready
 
@@ -15,14 +27,17 @@ $(document).ready(function(){
   function searchfilm(y){
     $(".box-film-search >div ").remove();
     var urlmovie ="https://api.themoviedb.org/3/search/movie?api_key=25b5af028ffd8f79e2dc1a12603c0a63&query="+y+"&page?&language=it-IT";
+    var urltv ="https://api.themoviedb.org/3/search/tv?api_key=25b5af028ffd8f79e2dc1a12603c0a63&query="+y+"&page?&language=it-IT";
     $.ajax({//prima chiamata ajax interrogo sul numero totali di pagine
       url:urlmovie,
       method:"GET",
+
       success:function(data){
-        var x=data.total_pages;//assegno il numero totali di pagine a una variabile
-        for(var i=1;i<=x;i++){//ciclo che permette di scorrere e mostrare i risultati di tutte le pagine
+        var totalpage=data.total_pages;//assegno il numero totali di pagine a una variabile
+        for(var i=1;i<=totalpage;i++){//ciclo che permette di scorrere e mostrare i risultati di tutte le pagine
           $.ajax({// seconda chiamata ajax per inserire i contenuti
             url:urlmovie,
+
             method:"GET",
             data:{
               page:i,
@@ -41,7 +56,7 @@ $(document).ready(function(){
               for(var i=0;i<risultati.length;i++){
                 //todo trovare modo per arrotondare per difetto quando la cifra decimale è pari a 5
                 nuovovoto=Math.round(risultati[i].vote_average);//trasformo il voto in numero intero arrotondando per eccesso o difetto
-                console.log(nuovovoto);
+
                 lingua=risultati[i].original_language;//prendo il valore della lingua
                 suffisso=risultati[i].poster_path;//prendo la seconda parte del codice per lo style
                 // condizione per i film senza copertina
@@ -53,13 +68,13 @@ $(document).ready(function(){
                 // console.log(lingua);
                 // controllo se nuovo vuoto presenta valori da 0 a 10
                 var nuovovotoda1a5=convertivoto(nuovovoto);//richiamo funzione per trasformare il voto da 1 a 5
-                console.log(nuovovotoda1a5);
+
 
                 // variabile stella assume il nuovo valore del nuovovoto
                 stella=nuovovotoda1a5;
-                console.log(stella);
+
                 attributorif=assegnaattrstella(nuovovotoda1a5);//richiamo funzione per assegnare attributo ad h2 voto
-                console.log(attributorif);
+
                 attributoriflan=assegnaattrlingua(lingua);//richiamo funzione per assegnare attributo ad h2 lingua
                 // controllo della lingua con inserimento per rif mettibandiera funzione
 
@@ -71,7 +86,7 @@ $(document).ready(function(){
                   vote:stella,
                   attributoriflan:attributoriflan,
                   attributo:attributorif,
-
+                  tipo:"Film",
                 };
                 var html =template(context);
                 // riempimento div box-film-search tramite handlebars
@@ -85,12 +100,13 @@ $(document).ready(function(){
             },//chiusura funzione success seconda chiamata ajax
 
           });//chiusura seconda chiamta ajax
-          console.log("x vale:"+i);
-          console.log("è la pag n."+data.page);
+
         }//chiusura ciclo for totali pagine
       },//CHIUSURA PRIMA funzione succes della prima chiamata ajax
     });//chiusura prima chiamata ajax
   };//chiusura funzione cerca film
+
+
 
 
   // funzione per convertire il voto
