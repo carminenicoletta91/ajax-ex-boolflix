@@ -1,10 +1,14 @@
 $(document).ready(function(){
   //evento click su bottone
+  var movie='movie';//variabile per accedere alla ricerca film
+  var tv='tv';//variabile per accedere alla ricerca serie tv
   $(".search button").click(
   function(){
+    $(".box-film-search >div ").remove();
     var search=$(".search input").val();
     console.log("valore input:"+search);
-    searchfilm(search);
+    searchfilm(search,movie);//richiamo funzione searchfilm con valore input + tiporicerca movie
+    searchfilm(search,tv);//richiamo funzione searchfilm con valore input + tiporicerca tv
   });
   // funzione per inserire sfondo nero quando siamo con il mouse sull'elemento
   // e per rimettere lo sfondo originale quando usciamo dall'elemento
@@ -24,20 +28,17 @@ $(document).ready(function(){
 
   //parte relativa alle funzioni
   // funzione cercafilm
-  function searchfilm(y){
-    $(".box-film-search >div ").remove();
-    var urlmovie ="https://api.themoviedb.org/3/search/movie?api_key=25b5af028ffd8f79e2dc1a12603c0a63&query="+y+"&page?&language=it-IT";
-    var urltv ="https://api.themoviedb.org/3/search/tv?api_key=25b5af028ffd8f79e2dc1a12603c0a63&query="+y+"&page?&language=it-IT";
-    $.ajax({//prima chiamata ajax interrogo sul numero totali di pagine
-      url:urlmovie,
-      method:"GET",
 
+  function searchfilm(input,tipo){
+    var url ="https://api.themoviedb.org/3/search/"+tipo+"?api_key=25b5af028ffd8f79e2dc1a12603c0a63&query="+input+"&page?&language=it-IT";
+    $.ajax({//prima chiamata ajax interrogo sul numero totali di pagine
+      url:url,
+      method:"GET",
       success:function(data){
         var totalpage=data.total_pages;//assegno il numero totali di pagine a una variabile
         for(var i=1;i<=totalpage;i++){//ciclo che permette di scorrere e mostrare i risultati di tutte le pagine
           $.ajax({// seconda chiamata ajax per inserire i contenuti
-            url:urlmovie,
-
+            url:url,
             method:"GET",
             data:{
               page:i,
@@ -56,7 +57,6 @@ $(document).ready(function(){
               for(var i=0;i<risultati.length;i++){
                 //todo trovare modo per arrotondare per difetto quando la cifra decimale è pari a 5
                 nuovovoto=Math.round(risultati[i].vote_average);//trasformo il voto in numero intero arrotondando per eccesso o difetto
-
                 lingua=risultati[i].original_language;//prendo il valore della lingua
                 suffisso=risultati[i].poster_path;//prendo la seconda parte del codice per lo style
                 // condizione per i film senza copertina
@@ -68,26 +68,41 @@ $(document).ready(function(){
                 // console.log(lingua);
                 // controllo se nuovo vuoto presenta valori da 0 a 10
                 var nuovovotoda1a5=convertivoto(nuovovoto);//richiamo funzione per trasformare il voto da 1 a 5
-
-
                 // variabile stella assume il nuovo valore del nuovovoto
                 stella=nuovovotoda1a5;
 
                 attributorif=assegnaattrstella(nuovovotoda1a5);//richiamo funzione per assegnare attributo ad h2 voto
 
                 attributoriflan=assegnaattrlingua(lingua);//richiamo funzione per assegnare attributo ad h2 lingua
-                // controllo della lingua con inserimento per rif mettibandiera funzione
+                var context;
+                // controllo se sono in movie o in tv
+                if(tipo==='movie'){//se sono in movie
 
-                 var context ={
-                  image:image,
-                  title:risultati[i].title,
-                  titleoriginal:risultati[i].original_title,
-                  language:risultati[i].original_language,
-                  vote:stella,
-                  attributoriflan:attributoriflan,
-                  attributo:attributorif,
-                  tipo:"Film",
-                };
+                  context ={//la variabile assumerà i seguenti valori
+                    image:image,
+                    title:risultati[i].title,
+                    titleoriginal:risultati[i].original_title,
+                    language:risultati[i].original_language,
+                    vote:stella,
+                    attributoriflan:attributoriflan,
+                    attributo:attributorif,
+                    tipo:"Film",
+                  };
+                }else if(tipo==='tv'){//se sono in tv
+
+                  context ={//la variabile assumerà i seguenti valori
+                    image:image,
+                    title:risultati[i].name,
+                    titleoriginal:risultati[i].original_name,
+                    language:risultati[i].original_language,
+                    vote:stella,
+                    attributoriflan:attributoriflan,
+                    attributo:attributorif,
+                    tipo:"TV",
+                  };
+                }
+
+
                 var html =template(context);
                 // riempimento div box-film-search tramite handlebars
                 $(".box-film-search ").append(html);
@@ -309,3 +324,5 @@ $(document).ready(function(){
     })//chiusura funzione each
 
   }//chiusura funzione mettibandiera
+
+// funzione visualizza solo 10 risultati

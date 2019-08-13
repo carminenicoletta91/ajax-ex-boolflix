@@ -53,8 +53,8 @@ background-size: cover;
 .list-in{
   display: none;
   position: absolute;
-  top:110px;
-  max-width:342px;
+  top:10px;
+  width:100%;
 }
 .search{
   margin-right: 20px;
@@ -68,9 +68,10 @@ background-size: cover;
 
 }
 .tipo-film{
+  text-align: center;
   position: absolute;
-  top:305px;
-  left:117px;
+  top:409px;
+  width:100%;
   background:red;
 
 
