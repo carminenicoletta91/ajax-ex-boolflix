@@ -32,7 +32,7 @@ position: relative;
 border:2px solid white;
 color:white;
 width:342px;
-height:450px;
+height:512px;
 margin-bottom:20px;
 background-repeat: no-repeat;
 background-size: cover;
@@ -40,10 +40,7 @@ background-size: cover;
 
 
 
-.list-in h2 span{
-  font-size:20px;
-  color:rgba(255, 255, 255, 0.5);
-}
+
 .black{
   background-color:black;
 }
@@ -55,6 +52,10 @@ background-size: cover;
   position: absolute;
   top:10px;
   width:100%;
+  height:100%;
+}
+.list-in h2{
+  font-size:17px;
 }
 .search{
   margin-right: 20px;
@@ -70,9 +71,11 @@ background-size: cover;
 .tipo-film{
   text-align: center;
   position: absolute;
-  top:409px;
+  bottom:10px;
   width:100%;
   background:red;
-
-
+}
+.list-in h2 span{
+  font-size:14px;
+  color:rgba(255, 255, 255, 0.5);
 }

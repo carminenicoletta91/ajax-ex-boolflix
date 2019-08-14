@@ -6,7 +6,6 @@ $(document).ready(function(){
   function(){
     $(".box-film-search >div ").remove();
     var search=$(".search input").val();
-    console.log("valore input:"+search);
     searchfilm(search,movie);//richiamo funzione searchfilm con valore input + tiporicerca movie
     searchfilm(search,tv);//richiamo funzione searchfilm con valore input + tiporicerca tv
   });
@@ -54,11 +53,16 @@ $(document).ready(function(){
               var attributoriflan;//variabile che assegna un attributo per la lingua
               var suffisso;//variabile per inserire la prima parte del codice dello style
               var image ;//varibaile per inserire immagine come sfondo
+              var idreturn;
               for(var i=0;i<risultati.length;i++){
                 //todo trovare modo per arrotondare per difetto quando la cifra decimale è pari a 5
                 nuovovoto=Math.round(risultati[i].vote_average);//trasformo il voto in numero intero arrotondando per eccesso o difetto
                 lingua=risultati[i].original_language;//prendo il valore della lingua
                 suffisso=risultati[i].poster_path;//prendo la seconda parte del codice per lo style
+                idreturn=risultati[i].id;
+                console.log(idreturn);
+
+
                 // condizione per i film senza copertina
                 if(suffisso ===null){
                   image="imgbandiera/copertina.gif";
@@ -75,9 +79,20 @@ $(document).ready(function(){
 
                 attributoriflan=assegnaattrlingua(lingua);//richiamo funzione per assegnare attributo ad h2 lingua
                 var context;
+                // todo inserire commenti
+                var over =risultati[i].overview.split(" ");
+
+                var newarray =[];
+                for(var k=0;k<35;k++){
+
+                  newarray.push(over[k])
+                }
+
+                var overnew=newarray.join(" ");
+                // fine todo
                 // controllo se sono in movie o in tv
                 if(tipo==='movie'){//se sono in movie
-
+                  returncast(idreturn,tipo)
                   context ={//la variabile assumerà i seguenti valori
                     image:image,
                     title:risultati[i].title,
@@ -86,10 +101,11 @@ $(document).ready(function(){
                     vote:stella,
                     attributoriflan:attributoriflan,
                     attributo:attributorif,
+                    overv:overnew,
                     tipo:"Film",
                   };
                 }else if(tipo==='tv'){//se sono in tv
-
+                  returncast(idreturn,tipo)
                   context ={//la variabile assumerà i seguenti valori
                     image:image,
                     title:risultati[i].name,
@@ -98,6 +114,7 @@ $(document).ready(function(){
                     vote:stella,
                     attributoriflan:attributoriflan,
                     attributo:attributorif,
+                    overv:overnew,
                     tipo:"TV",
                   };
                 }
@@ -122,6 +139,17 @@ $(document).ready(function(){
   };//chiusura funzione cerca film
 
 
+  // funzione per visualizzare attori
+  function returncast(x,y){
+    $.ajax({
+      url: "https://api.themoviedb.org/3/"+y+"/"+x+"/credits?api_key=e99307154c6dfb0b4750f6603256716d",
+      method:"GET",
+      success:function(data){
+        console.log(data.cast);
+        console.log(x+":"+y);
+      }
+    })
+  }
 
 
   // funzione per convertire il voto
