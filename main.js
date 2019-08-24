@@ -6,6 +6,7 @@ $(document).ready(function(){
   function(){
     $(".box-film-search >div ").remove();
     var search=$(".search input").val();
+    console.log(search);
     searchfilm(search,movie);//richiamo funzione searchfilm con valore input + tiporicerca movie
     searchfilm(search,tv);//richiamo funzione searchfilm con valore input + tiporicerca tv
   });
@@ -30,6 +31,7 @@ $(document).ready(function(){
 
   function searchfilm(input,tipo){
     var url ="https://api.themoviedb.org/3/search/"+tipo+"?api_key=25b5af028ffd8f79e2dc1a12603c0a63&query="+input+"&page?&language=it-IT";
+    console.log(url);
     $.ajax({//prima chiamata ajax interrogo sul numero totali di pagine
       url:url,
       method:"GET",
@@ -79,20 +81,19 @@ $(document).ready(function(){
 
                 attributoriflan=assegnaattrlingua(lingua);//richiamo funzione per assegnare attributo ad h2 lingua
                 var context;
+
                 // todo inserire commenti
-                var over =risultati[i].overview.split(" ");
 
-                var newarray =[];
+                var overvie =risultati[i].overview.split(" ");
+                var overviesplit =[];
                 for(var k=0;k<35;k++){
-
-                  newarray.push(over[k])
+                  overviesplit.push(overvie[k])
                 }
-
-                var overnew=newarray.join(" ");
+                overviesplit[35]="[...]";
+                var overnew=overviesplit.join(" ");
                 // fine todo
-                // controllo se sono in movie o in tv
+                var attore=returncast(tipo,idreturn);
                 if(tipo==='movie'){//se sono in movie
-                  returncast(idreturn,tipo)
                   context ={//la variabile assumerà i seguenti valori
                     image:image,
                     title:risultati[i].title,
@@ -102,10 +103,15 @@ $(document).ready(function(){
                     attributoriflan:attributoriflan,
                     attributo:attributorif,
                     overv:overnew,
+                    actors:"1:"+attore[0].name +" in " + attore[0].character +" 2:"
+                          + attore[1].name +" in " + attore[1].character +" 3:"+
+                          attore[2].name +" in " + attore[2].character + " 4:" +
+                          attore[3].name +" in " + attore[3].character +" 5:" +
+                          attore[4].name +" in " + attore[4].character,
                     tipo:"Film",
                   };
                 }else if(tipo==='tv'){//se sono in tv
-                  returncast(idreturn,tipo)
+
                   context ={//la variabile assumerà i seguenti valori
                     image:image,
                     title:risultati[i].name,
@@ -115,11 +121,14 @@ $(document).ready(function(){
                     attributoriflan:attributoriflan,
                     attributo:attributorif,
                     overv:overnew,
+                    actors:"1:"+attore[0].name +" in " + attore[0].character +" 2:"
+                          + attore[1].name +" in " + attore[1].character +" 3:"+
+                          attore[2].name +" in " + attore[2].character + " 4:" +
+                          attore[3].name +" in " + attore[3].character +" 5:" +
+                          attore[4].name +" in " + attore[4].character,
                     tipo:"TV",
                   };
                 }
-
-
                 var html =template(context);
                 // riempimento div box-film-search tramite handlebars
                 $(".box-film-search ").append(html);
@@ -134,22 +143,30 @@ $(document).ready(function(){
           });//chiusura seconda chiamta ajax
 
         }//chiusura ciclo for totali pagine
+
       },//CHIUSURA PRIMA funzione succes della prima chiamata ajax
     });//chiusura prima chiamata ajax
   };//chiusura funzione cerca film
 
 
-  // funzione per visualizzare attori
+  // funzione per visualizzare i primi 5 attori
   function returncast(x,y){
+    var item=[];
     $.ajax({
-      url: "https://api.themoviedb.org/3/"+y+"/"+x+"/credits?api_key=e99307154c6dfb0b4750f6603256716d",
+      url: "https://api.themoviedb.org/3/"+x+"/"+y+"/credits?api_key=e99307154c6dfb0b4750f6603256716d",
       method:"GET",
       success:function(data){
-        console.log(data.cast);
-        console.log(x+":"+y);
-      }
-    })
+        for(var i=0;i<5;i++){
+          item.push(data.cast[i]);
+        };
+      },
+       async: false,//disabilito la funzione asincrona;
+    });
+    return item;
   }
+
+
+
 
 
   // funzione per convertire il voto
