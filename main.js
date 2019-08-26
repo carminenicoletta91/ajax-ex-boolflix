@@ -45,19 +45,26 @@ $(document).ready(function(){
   // funzione cercafilm
 
   function searchfilm(input,tipo){
-    var url ="https://api.themoviedb.org/3/search/"+tipo+"?api_key=25b5af028ffd8f79e2dc1a12603c0a63&query="+input+"&page?&language=it-IT";
-    console.log(url);
+
     $.ajax({//prima chiamata ajax interrogo sul numero totali di pagine
-      url:url,
+      url:"https://api.themoviedb.org/3/search/"+tipo,
       method:"GET",
+      data:{
+        api_key:"25b5af028ffd8f79e2dc1a12603c0a63",
+        query:input,
+        language: "it-IT",
+      },
       success:function(data){
         var totalpage=data.total_pages;//assegno il numero totali di pagine a una variabile
         for(var i=1;i<=totalpage;i++){//ciclo che permette di scorrere e mostrare i risultati di tutte le pagine
           $.ajax({// seconda chiamata ajax per inserire i contenuti
-            url:url,
+            url:"https://api.themoviedb.org/3/search/"+tipo,
             method:"GET",
             data:{
+              api_key:"25b5af028ffd8f79e2dc1a12603c0a63",
+              query:input,
               page:i,
+              language: "it-IT",
             },
             success:function(data){
               var risultati=$(data.results);//variabile con valore risultati della chiamta
@@ -73,7 +80,7 @@ $(document).ready(function(){
               var idreturn;
               var genere;
               for(var i=0;i<risultati.length;i++){
-              
+
                 nuovovoto=Math.floor(risultati[i].vote_average);//trasformo il voto in numero intero arrotondando per eccesso o difetto
                 lingua=risultati[i].original_language;//prendo il valore della lingua
                 suffisso=risultati[i].poster_path;//prendo la seconda parte del codice per lo style
