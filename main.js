@@ -146,9 +146,10 @@ $(document).ready(function(){
                     attributo:attributorif,
                     overv:overnew,
                     genre:generemesso,
-                    actors:"1:"+attore[0].name+" 2:"+ attore[1].name
-                          +" 3:"+attore[2].name + " 4:" +attore[3].name
-                          +" 5:" +attore[4].name,
+                    //todo mi restituisce errore da modificare
+                    // actors:"1:"+attore[0].name+" 2:"+ attore[1].name
+                    //       +" 3:"+attore[2].name + " 4:" +attore[3].name
+                    //       +" 5:" +attore[4].name,
                     tipo:"Film",
                   };
                 }else if(tipo==='tv'){//se sono in tv
@@ -162,9 +163,10 @@ $(document).ready(function(){
                     attributo:attributorif,
                     overv:overnew,
                     genre:generemesso,
-                    actors:"1:"+attore[0].name+" 2:"+ attore[1].name
-                          +" 3:"+attore[2].name + " 4:" +attore[3].name
-                          +" 5:" +attore[4].name,
+                    //todo mi restituisce errore da modificare
+                    // actors:"1:"+attore[0].name+" 2:"+ attore[1].name
+                    //       +" 3:"+attore[2].name + " 4:" +attore[3].name
+                    //       +" 5:" +attore[4].name,
                     tipo:"TV",
                   };
                 }
