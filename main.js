@@ -293,27 +293,27 @@ $(document).ready(function(){
     $(".box-film-search >div h2 span[rif]  ").each(function(){
       // dichiaro variabile e gli assegno come valore la mia icona stella
       // presa da fontawesome
-      var inserisci=("<i class='fas fa-star yellow'>"+"</i>");
-
+      var stellapiena=("<i class='fas fa-star yellow'>"+"</i>");
+      var stellavuota=("<i class='far fa-star'>"+"</i>");
       // verifica che elmento temporaneo abbia un attributo rif
       switch ($(this).attr("rif")) {
         case '0'://con valore 0
           $(this).html("Nessuna votazione");//metto una stringa
           break;
         case '1'://con valore 1
-          $(this).html(inserisci);//metto una sola stella
+          $(this).html(stellapiena+stellavuota+stellavuota+stellavuota+stellavuota);//metto una sola stella
           break;
         case '2'://con valore 2
-          $(this).html(inserisci+inserisci);//metto due stelle
+          $(this).html(stellapiena+stellapiena+stellavuota+stellavuota+stellavuota);//metto due stelle
           break;
         case '3'://con valore 3
-          $(this).html(inserisci+inserisci+inserisci);//metto 3 stelle
+          $(this).html(stellapiena+stellapiena+stellapiena+stellavuota+stellavuota);//metto 3 stelle
           break;
         case '4'://con valore 4
-          $(this).html(inserisci+inserisci+inserisci+inserisci);//metto 4 stelle
+          $(this).html(stellapiena+stellapiena+stellapiena+stellapiena+stellavuota);//metto 4 stelle
           break;
         case '5'://con valore 5
-          $(this).html(inserisci+inserisci+inserisci+inserisci+inserisci);//metto 5 stelle
+          $(this).html(stellapiena+stellapiena+stellapiena+stellapiena+stellapiena);//metto 5 stelle
           break;
       }//chiusura controllo
     })//chiusura funzione each
