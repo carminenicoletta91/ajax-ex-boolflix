@@ -13,15 +13,47 @@
   <body>
 
     <header>
-      <div class="header-sx">
-        <img src="imgbandiera/logo.png" alt="">
+      <div class="header-in">
+        <div class="header-sx">
+          <img src="imgbandiera/logo.png" alt="">
+        </div>
+        <div class="search">
+          <input type="text" placeholder="Search title">
+          <button>Send</button>
+        </div>
       </div>
+      <div class="menu">
+        <div class="menu-genere">
+          <h2>Filtra Per Genere</h2>
+          <i class="fas fa-caret-down menuicona"></i>
 
-      <div class="search">
-        <input type="text" placeholder="Search title">
-        <button>Send</button>
+        <div class="menu-genere-in">
+          <ul>
+            <li rif="Azione"><a href="#">Azione</a></li>
+            <li rif="Avventura"><a href="#">Avventura</a></li>
+            <li rif="Animazione"><a href="#">Animazione</a></li>
+            <li rif="Commedia"><a href="#">Commedia</a></li>
+            <li rif="Crime"><a href="#">Crime</a></li>
+            <li rif="Documentario"><a href="#">Documentario</a></li>
+            <li rif="Dramma"><a href="#">Dramma</a></li>
+            <li rif="Famiglia"><a href="#">Famiglia</a></li>
+            <li rif="Fantasy"><a href="#">Fantasy</a></li>
+            <li rif="Storia"><a href="#">Storia</a></li>
+            <li rif="Horror"><a href="#">Horror</a></li>
+            <li rif="Musica"><a href="#">Musica</a></li>
+            <li rif="Mistero"><a href="#">Mistero</a></li>
+            <li rif="Romance"><a href="#">Romanzo</a></li>
+            <li rif="Fantascienza"><a href="#">Commedia</a></li>
+            <li rif="Thriller"><a href="#">Thriller</a></li>
+            <li rif="Guerra"><a href="#">Guerra</a></li>
+            <li rif="Western"><a href="#">Western</a></li>
+          </ul>
+        </div>
+        </div>
       </div>
     </header>
+
+
     <div class="box-film-search">
 
     </div>
@@ -31,7 +63,7 @@
     <!-- template handlebars -->
     <script id="template" type="text/x-handlebars-template">
 
-      <div class="list-film-search" style="background-image:url('  {{image}}')" >
+      <div rifgenere="{{rifgenere}}"riftipo="{{tipo}}"class="list-film-search" style="background-image:url('  {{image}}')" >
 
         <div class="list-in">
           <h2>Titolo:<span >{{title}}</span></h2>
@@ -39,7 +71,8 @@
           <h2>Lingua-Originale:<span riflan="{{attributoriflan}}">{{language}}</span></h2>
           <h2>Voto:<span rif="{{attributo}}">{{vote}}</span></h2>
           <h2 >Overview:<span class="overview">{{overv}}</span></h2>
-          <h2>Attori:<span> {{actors}}</span></h2> 
+          <h2>Attori:<span> {{actors}}</span></h2>
+          <h2 class="genere">Genere:<span> {{genre}}</span></h2>
           <h2 class="tipo-film">{{tipo}}</h2>
         </div>
 

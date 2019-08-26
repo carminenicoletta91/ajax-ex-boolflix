@@ -20,12 +20,12 @@ body{
   border:1px solid black;
   box-sizing: border-box;
 }
-header{
+.header-in{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height:100px;
-  background:black;
+
+
 }
 .list-film-search{
 position: relative;
@@ -38,9 +38,18 @@ background-repeat: no-repeat;
 background-size: cover;
 }
 
+header{
+  background:black;
 
-
-
+  display:flex;
+  flex-direction: column;
+}
+.header-sx{
+  position: relative;
+}
+.type{
+  position: absolute;
+}
 .black{
   background-color:black;
 }
@@ -68,6 +77,54 @@ background-size: cover;
   color:yellow;
 
 }
+.menu{
+  display: flex;
+  flex-direction: column;
+  align-items:flex-start;
+}
+.menu-genere{
+  display: flex;
+  position: relative;
+  flex-direction:row;
+  justify-content: space-around;
+  align-items: center;
+  color:white;
+  margin-left:30px;
+
+}
+.menu-genere h2{
+  font-size:20px;
+
+}
+.menu-genere-in{
+  position: absolute;
+  display:none;
+  width:100%;
+  background-color:white;
+  color:black;
+  text-align: center;
+  margin-left:20px;
+  top:24px;
+  right: 0;
+  z-index:999;
+}
+.menu-genere-in ul{
+  text-decoration: none;
+  list-style: none;
+}
+.menu-genere-in ul li{
+  list-style: none;
+  padding:5px 0;
+}
+.menu-genere-in ul li a {
+  text-decoration:none;
+  color:black;
+
+}
+.menu-genere-in ul li:hover{
+  background-color:red;
+  color:black;
+}
 .tipo-film{
   text-align: center;
   position: absolute;
@@ -78,4 +135,12 @@ background-size: cover;
 .list-in h2 span{
   font-size:14px;
   color:rgba(255, 255, 255, 0.5);
+}
+form{
+  width:120px;
+  background:gray;
+  border:white;
+}
+.type {
+  color:white;
 }

@@ -1,9 +1,12 @@
 $(document).ready(function(){
   //evento click su bottone
+  $(".menu-genere").hide();
   var movie='movie';//variabile per accedere alla ricerca film
   var tv='tv';//variabile per accedere alla ricerca serie tv
   $(".search button").click(
+
   function(){
+    $(".menu-genere").show();
     $(".box-film-search >div ").remove();
     var search=$(".search input").val();
     console.log(search);
@@ -23,6 +26,18 @@ $(document).ready(function(){
     }
   })
 
+
+  $(".menu-genere > i").click(function(){
+    $(".menu-genere-in").toggle();
+  })
+  $(".menu-genere-in li").click(function(){
+    $(".box-film-search > div").hide();
+    $(".menu-genere-in").hide();
+    var attributogenere=$(this).attr("rif");
+    console.log(attributogenere);
+
+
+  })
 })//chiusura document ready
 
 
@@ -56,13 +71,15 @@ $(document).ready(function(){
               var suffisso;//variabile per inserire la prima parte del codice dello style
               var image ;//varibaile per inserire immagine come sfondo
               var idreturn;
+              var genere;
               for(var i=0;i<risultati.length;i++){
                 //todo trovare modo per arrotondare per difetto quando la cifra decimale è pari a 5
                 nuovovoto=Math.round(risultati[i].vote_average);//trasformo il voto in numero intero arrotondando per eccesso o difetto
                 lingua=risultati[i].original_language;//prendo il valore della lingua
                 suffisso=risultati[i].poster_path;//prendo la seconda parte del codice per lo style
                 idreturn=risultati[i].id;
-                console.log(idreturn);
+                genere=risultati[i].genre_ids;
+
 
 
                 // condizione per i film senza copertina
@@ -85,16 +102,41 @@ $(document).ready(function(){
                 // todo inserire commenti
 
                 var overvie =risultati[i].overview.split(" ");
+
                 var overviesplit =[];
-                for(var k=0;k<35;k++){
+                for(var k=0;k<60;k++){
                   overviesplit.push(overvie[k])
                 }
-                overviesplit[35]="[...]";
+                overviesplit[60]="[...]";
                 var overnew=overviesplit.join(" ");
-                // fine todo
+                // // fine todo
                 var attore=returncast(tipo,idreturn);
+                if(genere.length===0){
+                  console.log("sei qui");
+                  generemesso="Nessuna descrizione";
+                }else {
+                var generemesso=[];
+                var assegnagenere=generetv(tipo);
+                for(var l=0;l<assegnagenere.length;l++){
+                  for(var g=0;g<genere.length;g++){
+
+                    if(assegnagenere[l].id===genere[g]){
+
+                      generemesso.push(assegnagenere[l].name);
+
+
+                    }
+                  }
+
+                }
+                }
+
+                var rifgenere=generemesso.toString();
+                // console.log(rifgenere);
+
                 if(tipo==='movie'){//se sono in movie
                   context ={//la variabile assumerà i seguenti valori
+                    rifgenere:rifgenere,
                     image:image,
                     title:risultati[i].title,
                     titleoriginal:risultati[i].original_title,
@@ -103,15 +145,13 @@ $(document).ready(function(){
                     attributoriflan:attributoriflan,
                     attributo:attributorif,
                     overv:overnew,
-                    actors:"1:"+attore[0].name +" in " + attore[0].character +" 2:"
-                          + attore[1].name +" in " + attore[1].character +" 3:"+
-                          attore[2].name +" in " + attore[2].character + " 4:" +
-                          attore[3].name +" in " + attore[3].character +" 5:" +
-                          attore[4].name +" in " + attore[4].character,
+                    genre:generemesso,
+                    actors:"1:"+attore[0].name+" 2:"+ attore[1].name
+                          +" 3:"+attore[2].name + " 4:" +attore[3].name
+                          +" 5:" +attore[4].name,
                     tipo:"Film",
                   };
                 }else if(tipo==='tv'){//se sono in tv
-
                   context ={//la variabile assumerà i seguenti valori
                     image:image,
                     title:risultati[i].name,
@@ -121,11 +161,10 @@ $(document).ready(function(){
                     attributoriflan:attributoriflan,
                     attributo:attributorif,
                     overv:overnew,
-                    actors:"1:"+attore[0].name +" in " + attore[0].character +" 2:"
-                          + attore[1].name +" in " + attore[1].character +" 3:"+
-                          attore[2].name +" in " + attore[2].character + " 4:" +
-                          attore[3].name +" in " + attore[3].character +" 5:" +
-                          attore[4].name +" in " + attore[4].character,
+                    genre:generemesso,
+                    actors:"1:"+attore[0].name+" 2:"+ attore[1].name
+                          +" 3:"+attore[2].name + " 4:" +attore[3].name
+                          +" 5:" +attore[4].name,
                     tipo:"TV",
                   };
                 }
@@ -156,16 +195,36 @@ $(document).ready(function(){
       url: "https://api.themoviedb.org/3/"+x+"/"+y+"/credits?api_key=e99307154c6dfb0b4750f6603256716d",
       method:"GET",
       success:function(data){
+
         for(var i=0;i<5;i++){
           item.push(data.cast[i]);
-        };
+
+          if(item[i]===undefined){
+            delete item[i];
+
+          }
+          }
+
       },
-       async: false,//disabilito la funzione asincrona;
+        async:false,//disabilito la funzione asincrona;
     });
-    return item;
+
+      return item;
+
   }
 
-
+  function generetv(y){
+    var genere;
+    $.ajax({
+      url:"https://api.themoviedb.org/3/genre/"+y+"/list?api_key=25b5af028ffd8f79e2dc1a12603c0a63&language=it-IT",
+      method:"GET",
+      success:function(data){
+        genere=data.genres;
+      },
+      async:false,
+    })
+    return genere;
+  }
 
 
 
