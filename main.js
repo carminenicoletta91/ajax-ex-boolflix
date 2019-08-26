@@ -73,8 +73,8 @@ $(document).ready(function(){
               var idreturn;
               var genere;
               for(var i=0;i<risultati.length;i++){
-                //todo trovare modo per arrotondare per difetto quando la cifra decimale è pari a 5
-                nuovovoto=Math.round(risultati[i].vote_average);//trasformo il voto in numero intero arrotondando per eccesso o difetto
+              
+                nuovovoto=Math.floor(risultati[i].vote_average);//trasformo il voto in numero intero arrotondando per eccesso o difetto
                 lingua=risultati[i].original_language;//prendo il valore della lingua
                 suffisso=risultati[i].poster_path;//prendo la seconda parte del codice per lo style
                 idreturn=risultati[i].id;
