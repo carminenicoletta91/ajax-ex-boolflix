@@ -14,8 +14,14 @@
 
     <div class="container">
       <header>
-        <input id="query" placeholder="Inserisci un titolo"/>
-        <button id="myButton">Cerca</button>
+        <div class="header-sx">
+          <img src="img/logo.png" alt="">
+        </div>
+        <div class="header-dx">
+          <input id="query" placeholder="Inserisci un titolo"/>
+          <button id="myButton">Cerca</button>
+        </div>
+
       </header>
       <!-- contenitore delle schede -->
       <div id="results">
@@ -25,22 +31,23 @@
 
     <!-- usiamo un template per creare le schede film -->
     <script id="movie" type="text/x-handlebars-template">
-      <div class="movie">
+      <div class="movie"style="background:{{{img}}}">
         <ul>
           <li><span class="bold">Tipo:</span> <span> {{type}}</span> </li>
           <li><span class="bold">Titolo:</span> <span class="movie-title"> {{title}}</span> </li>
           <li><span class="bold">Titolo originale:</span><span class="original_title"> {{originalTitle}}</span></li>
           <li><span class="bold">Lingua:</span><span class="movie-lan"> {{{movieLan}}}</span></li>
           <li><span class="bold">Voto:</span><span class="movie-rate"> {{{movieRate}}}</span></li>
+          <li><span class="bold">Overview:</span><span class="movie-Overview"> {{{movieOverview}}}</span></li>
           {{{img}}}
         </ul>
       </div>
     </script>
-    <!-- <script id="movie-adv" type="text/x-handlebars-template">
-      <div class="movie">
-        <div class="img-wrapper">
+    <script id="movie-adv" type="text/x-handlebars-template">
+      <div class="movie"style="background-image:url('  {{{img}}}')">
+        <!-- <div class="img-wrapper">
           {{{img}}}
-        </div>
+        </div> -->
         <div class="info-wrapper">
           <h1>{{title}}</h1>
           <ul>
@@ -51,7 +58,7 @@
           </ul>
         </div>
       </div>
-    </script> -->
+    </script>
 
     <script type="text/javascript" src="main.js"></script>
 

@@ -53,7 +53,7 @@ function searchtv(query){
 }
 function stamparisultato(tipo,risultato){
   var obj=$("#results");
-  var source=$("#movie").html();
+  var source=$("#movie-adv").html();
   var template=Handlebars.compile(source);
   var title="";
   var originaltitle="";
@@ -95,9 +95,11 @@ function getStarsFromRate(voto){
 function getPosterPath(posterpath){
   var imgcorrispondente="";
   if (posterpath){
-    imgcorrispondente=" <img src='https://image.tmdb.org/t/p/w185"+posterpath+"'>";
-  }else{
-    imgcorrispondente="<img src='img/copertina.gif'style='width:185px'>"
+    // <img class='poster' src=
+    imgcorrispondente=" https://image.tmdb.org/t/p/w342"+posterpath+"";
+  }
+  else{
+    imgcorrispondente="img/copertina.gif ";
   }
   return imgcorrispondente;
 }
