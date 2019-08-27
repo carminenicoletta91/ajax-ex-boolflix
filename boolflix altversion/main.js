@@ -3,6 +3,7 @@ $(document).ready(function(){
 
 })
 function searchinput(){
+  $("#results > div").remove();
   var query=$("#query").val();
   console.log(query);
   searchmovies(query);
@@ -72,6 +73,7 @@ function stamparisultato(tipo,risultato){
       originalTitle:originalTitle,
       movieLan:getImageLanguage(risultato[i].original_language),
       movieRate:getStarsFromRate(risultato[i].vote_average),
+      img:getPosterPath(risultato[i].poster_path),
     };
     var html=template(context);
     obj.append(html);
@@ -89,6 +91,18 @@ function getStarsFromRate(voto){
   }
   return imgstar;
 }
+
+function getPosterPath(posterpath){
+  var imgcorrispondente="";
+  if (posterpath){
+    imgcorrispondente=" <img src='https://image.tmdb.org/t/p/w185"+posterpath+"'>";
+  }else{
+    imgcorrispondente="<img src='img/copertina.gif'style='width:185px'>"
+  }
+  return imgcorrispondente;
+}
+
+
 function getImageLanguage(languageid){
   var languageavailable=[
     "it",
