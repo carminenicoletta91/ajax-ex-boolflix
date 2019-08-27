@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+  <head>
+    <meta charset="utf-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.2/handlebars.min.js"></script>
+    <link rel="stylesheet" href="css/all.css">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Boolflix</title>
+  </head>
+
+  <body>
+
+    <div class="container">
+      <header>
+        <input id="query" placeholder="Inserisci un titolo"/>
+        <button id="myButton">Cerca</button>
+      </header>
+      <!-- contenitore delle schede -->
+      <div id="results">
+      </div>
+    </div>
+
+
+    <!-- usiamo un template per creare le schede film -->
+    <script id="movie" type="text/x-handlebars-template">
+      <div class="movie">
+        <ul>
+          <li><span class="bold">Tipo:</span> <span> {{type}}</span> </li>
+          <li><span class="bold">Titolo:</span> <span class="movie-title"> {{title}}</span> </li>
+          <li><span class="bold">Titolo originale:</span><span class="original_title"> {{originalTitle}}</span></li>
+          <li><span class="bold">Lingua:</span><span class="movie-lan"> {{{movieLan}}}</span></li>
+          <li><span class="bold">Voto:</span><span class="movie-rate"> {{{movieRate}}}</span></li>
+          <!-- {{{img}}} -->
+        </ul>
+      </div>
+    </script>
+    <!-- <script id="movie-adv" type="text/x-handlebars-template">
+      <div class="movie">
+        <div class="img-wrapper">
+          {{{img}}}
+        </div>
+        <div class="info-wrapper">
+          <h1>{{title}}</h1>
+          <ul>
+            <li><span class="bold">Tipo:</span> <span> {{type}}</span> </li>
+            <li><span class="bold">Titolo originale:</span><span class="original_title"> {{originalTitle}}</span></li>
+            <li><span class="bold">Lingua:</span><span class="movie-lan"> {{{movieLan}}}</span></li>
+            <li><span class="bold">Voto:</span><span class="movie-rate"> {{{movieRate}}}</span></li>
+          </ul>
+        </div>
+      </div>
+    </script> -->
+
+    <script type="text/javascript" src="main.js"></script>
+
+  </body>
+</html>

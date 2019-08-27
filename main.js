@@ -80,7 +80,6 @@ $(document).ready(function(){
               var idreturn;
               var genere;
               for(var i=0;i<risultati.length;i++){
-
                 nuovovoto=Math.floor(risultati[i].vote_average);//trasformo il voto in numero intero arrotondando per eccesso o difetto
                 lingua=risultati[i].original_language;//prendo il valore della lingua
                 suffisso=risultati[i].poster_path;//prendo la seconda parte del codice per lo style
@@ -179,7 +178,7 @@ $(document).ready(function(){
                 }
                 var html =template(context);
                 // riempimento div box-film-search tramite handlebars
-                $(".box-film-search ").append(html);
+                $(".box-film-search").append(html);
 
               }
 
